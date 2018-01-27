@@ -1,0 +1,223 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: linear-gradient(to bottom right, #000, #111);
+  min-height: 100vh;
+  background-repeat: no-repeat;
+  color: #fff;
+  font-family: Lato;
+  line-height: 1.4;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  padding: 1em;  
+}
+
+.logo {
+  width: 75px;
+}
+
+.logo > svg {
+  width: 100%;
+  height: auto;
+}
+
+.quote-container {
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.8em;
+  padding: 1em 1em 1em 1.8em;
+}
+
+.quote-content {
+  max-width: 700px;
+}
+
+#author {
+  font-size: 65%;
+  float: right;
+  margin-top: 1em;
+  position: relative;
+}
+
+#author::before {
+  content: "";
+  width: 15px;
+  height: 2px;
+  background: #68B7C1;
+  position: absolute;
+  left: -19px;
+  top: 13px;
+  border-radius: 2px;
+}
+
+#quote {
+  position: relative;
+}
+
+.quotation-mark > svg {
+  fill: #68B7C1;
+  width: 35px;
+  position: absolute;
+  left: -1.5em;
+  top: -10px;
+}
+
+.social-container {
+    float: left;
+    margin-right: 1em;
+}
+
+.social {
+    width: 40px;
+    height: 40px;
+    border: none;
+    padding: 0;
+    margin-right: 0.15em;
+    border: 2px solid #4099FF;
+    border-radius: 50%;
+    position: relative;
+    margin-top: 0.4em;
+    display: inline-block;
+}
+
+
+.social:hover {
+  cursor: pointer;
+}
+
+.social svg {
+    width: 22px;
+    position: absolute;
+    transition: all 0.3s ease-in-out;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+
+#facebook {
+  border-color: #3C78A2;
+}
+
+#facebook svg {
+  width: 30px;
+}
+
+#google {
+    border-color: rgb(216, 0, 39);
+}
+
+.button-container {
+    text-align: center;
+    padding-bottom: 2rem;
+}
+
+.quote-button-container {
+  text-align: center;
+  padding-bottom: 1em;
+}
+
+.quote-button {
+    background: none;
+    border: 2px solid #fff;
+    padding: 10px 20px;
+    color: #fff;
+    font-size: 1em;
+    transition: all 0.2s ease-in-out;
+}
+
+.quote-button:hover {
+    color: #68B7C1;
+    border-color: #68B7C1;
+    cursor: pointer;
+}
+
+
+.spinner {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -40px;
+    display: none;
+}
+
+.spinner .left, .spinner .center ,.spinner .right  {
+  content: "";
+  display: inline-block;
+  margin: 0 2px;
+  width: 10px;
+  height: 10px;
+  background: #68B7C1;
+  border-radius: 50%; 
+  animation: edges 0.5s infinite;
+  animation-timing-function: ease-in-out;
+}
+
+.spinner .center {
+  animation: middle 0.5s infinite;
+}
+
+@media (min-width: 500px) {
+  
+  .quotation-mark > svg {
+    width: 40px;
+    left: -1.6em;
+  }
+  
+  .quote-container {
+    font-size: 2em;
+    padding: 2em;
+  }
+  
+  .quote-button {
+    font-size: 1.2em;
+  }
+  
+  #author::before {
+    top: 16px;
+  }
+  
+  
+} 
+
+@keyframes middle {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  
+  50% {
+    transform: scale(1.5);
+    opacity: 1;
+  }
+}
+
+@keyframes edges {
+    0%, 100% {
+    transform: scale(1.5);
+    opacity: 1;
+  }
+  
+  50% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+}
+
+footer {
+  font-size: 0.8em;
+  text-align: center;
+  padding: 1em;
+}
+
+footer a {
+  color: #fff;
+}
