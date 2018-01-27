@@ -123,6 +123,7 @@ header {
 .quote-button-container {
   text-align: center;
   padding-bottom: 1em;
+  position: relative;
 }
 
 .quote-button {
@@ -145,9 +146,11 @@ header {
     position: absolute;
     left: 0;
     right: 0;
-    top: -40px;
-    display: none;
+    top: -35px;
+  
+ 
 }
+
 
 .spinner .left, .spinner .center ,.spinner .right  {
   content: "";
