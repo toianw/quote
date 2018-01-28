@@ -1,6 +1,6 @@
 // Todo: 
 // 1. Add a timeout to the JSONP request
-// 2. Make the button grey when unclickable
+// 2. Add tweet functionality
 
 {
   
@@ -8,24 +8,31 @@
   const quoteBtn = $('quote-btn'),
         quote = $('quote'),
         author = $('author'),
-        tweet = $('author'),
+        tweetBtn = $('tweet'),
         quoteBox = $('quoteBox'),
         loader = $('loader');
 
   
-  // initialize
-  let clickable = false;
+  // initialize with a quote
   getQuote();
   
-  quoteBtn.click(function() {
-    if (clickable) {
-      getQuote()
-    }
+  // Listen for clicks
+  quoteBtn.click(getQuote);
+  
+  tweetBtn.click(function() {
+    const tweetContent = composeTweet();
+    
   });
   
+  
+  // get a quote using JSONP and render in the DOM
   function getQuote() {
     
-    clickable = false;
+    // disable further clicks until the quote arrives or fails
+    quoteBtn.addClass('disabled')
+            .attr('disabled');
+    
+    // waiting for next quote...
     loader.show();
     quoteBox.fadeOut(200);
     
@@ -38,28 +45,45 @@
 
         callback: {
           jsonp: ''
-        } 
+        },
+      
+        timeout: 8000
       })
       
+        // Yeah! We got a new quote:
         .then(function(data) {
           renderQuote(data);
         })
 
+        // Oops, something went wrong:
         .catch(function(err) {
-          renderquote({
-            quoteText: "Sorry, I couldn't seem to find a quote this time",
+          renderQuote({
+            quoteText: "Sorry, I couldn't seem to find a quote this time. Please try again.",
             quoteAuthor: "Random Quote Machine"
           });
         });
   }
   
   function renderQuote({quoteText, quoteAuthor}) {
+    
+    //render the content of the new quote
     quote.html(quoteText);
     author.html(quoteAuthor || 'Unknown');
     quoteBox.fadeIn(200);
     loader.hide();
-    clickable = true;
+    
+    // allow another click now 
+    quoteBtn.removeClass('disabled')
+            .removeAttr('disabled');
   };
+  
+  
+  
+  
+  // The iQuery library:
+  // -------------------
+  // This is my very dumb version of jQuery, to allow the use of 
+  // jQuery-like syntax to interact with the DOM  
   
   function $(id) {
 
@@ -84,13 +108,34 @@
       
       html(html) {
         this.el.innerHTML = html; 
+        return this;
+      }
+      
+      addClass(className) {
+        this.el.classList.add(className);
+        return this;
+      }
+      
+      removeClass(className) {
+        this.el.classList.remove(className);
+        return this;
+      }
+      
+      attr(name, value = '') {
+        this.el.setAttribute(name, value);
+        return this;
+      }
+      
+      removeAttr(name) {
+        this.el.removeAttribute(name);
+        return this;
       }
 
       fadeOut(time = 300, callback) {
         this.el.style.transition = `opacity ${time}ms`;
         this.el.style.opacity = '0';
         if (callback)
-          this.handleCallback.call(this, callback);
+          this.handleTransitionCallback.call(this, callback);
 
       }
 
@@ -98,10 +143,10 @@
         this.el.style.transition = `opacity ${time}ms`;
         this.el.style.opacity = '1';
         if (callback)
-          this.handleCallback.call(this, callback);
+          this.handleTransitionCallback.call(this, callback);
       }
 
-      handleCallback(callback) {
+      handleTransitionCallback(callback) {
         this.el.addEventListener('transitionend', ended);
         function ended(event) {
           event.srcElement.removeEventListener('transitionend', ended);
@@ -115,9 +160,13 @@
 
   }
   
-
   
-  function fetchJSONP(url, {data = {}, callback={callback: ''}} = {} ) {
+  
+  function fetchJSONP(url, {
+    data = {}, 
+    callback = {callback: ''},
+    timeout
+  } = {} ) {
 
   // Assign a random name to the callback if no name is provided
   const callbackKey = Object.getOwnPropertyNames(callback),
@@ -126,7 +175,7 @@
   
   callback[callbackKey] = callbackName;
 
-  // Create a map of all key value pairs
+  // Create a 'map' object of all key value pairs for query string
   const keyValues = Object.assign(data, callback);
   
   // Construct the query string

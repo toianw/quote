@@ -62,6 +62,10 @@ header {
   position: relative;
 }
 
+.quotation-mark {
+    position: absolute;
+}
+
 .quotation-mark > svg {
   fill: #68B7C1;
   width: 35px;
@@ -135,11 +139,22 @@ header {
     transition: all 0.2s ease-in-out;
 }
 
+.quote-button:focus {
+  outline: none;
+}
+
 .quote-button:hover {
     color: #68B7C1;
     border-color: #68B7C1;
     cursor: pointer;
 }
+
+.quote-button.disabled, .quote-button.disabled:hover {
+  color: #555;
+  border-color: #555;  
+}
+
+
 
 
 .spinner {
