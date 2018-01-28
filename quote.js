@@ -185,7 +185,7 @@
   
   const requestURL = url + '?' + queryString;
   
-    return new Promise(function(resolve, reject) {
+    const JsonpPromise = new Promise(function(resolve, reject) {
       
        const script = document.createElement('script');
       
@@ -208,5 +208,18 @@
          document.head.removeChild(script);
        }
      });
+    
+    if (timeout) {
+      return Promise.race([
+        
+        JsonpPromise, 
+        
+        new Promise(function(resolve, reject) {
+          setTimeout( () => reject(new Error('timeout')), timeout);    
+        })
+      ]);
+    } else {
+      return jsonPromise;
+    }
    }
 }
